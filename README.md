@@ -2,7 +2,7 @@
 
 ## Download
 
-[Download Rename This (Win 10/11)](https://www.bugzinho.com/renamethis-br)
+[Rename This (Win 10/11)](https://www.bugzinho.com/renamethis-br)
 
 ## Apresentação
 
