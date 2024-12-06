@@ -23,7 +23,7 @@ O processo de renomeação é simples e rápido. Siga estas etapas:
 
 4. **Renomeie**: Após configurar tudo corretamente, basta clicar em "Renomear" e aguardar o processo ser concluído. O tempo de execução pode variar dependendo da quantidade de arquivos na pasta.
 
-Para mais informações, acesse o tutorial: [Tutorial Rename This](https://www.bugzinho.com)
+Para mais informações, acesse o site: [Bugzinho.com](https://www.bugzinho.com)
 
 ## Avisos Importantes
 
@@ -114,7 +114,7 @@ The renaming process is simple and fast. Follow these steps:
 
 4. **Rename**: After setting everything correctly, just click "Rename" and wait for the process to finish. The execution time may vary depending on the number of files in the folder.
 
-For more information, visit the tutorial: [Rename This Tutorial](https://www.bugzinho.com)
+For more information, visit the site: [Bugzinho.com](https://www.bugzinho.com)
 
 ## Important Notices
 
