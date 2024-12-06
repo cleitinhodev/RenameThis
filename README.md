@@ -103,7 +103,7 @@ O **Rename This!** faz uso de diversas bibliotecas de código aberto, e gostarí
 
 The renaming process is simple and fast. Follow these steps:
 
-1. **Select the folder**: Choose the directory containing the files you want to rename. You can do this manually or by clicking the "Browse" button.
+1. **Select the folder**: Choose the directory containing the files you want to rename. You can do this manually or by clicking the "Search" button.
    
 2. **Choose the name**: Set the name you want to apply to the files. If you prefer, you can leave the field blank.
 
