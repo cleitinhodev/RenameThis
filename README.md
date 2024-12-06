@@ -93,7 +93,7 @@ O **Rename This!** faz uso de diversas bibliotecas de código aberto, e gostarí
 
 ## Download
 
-[Rename This (Win 10/11)](https://www.bugzinho.com/renamethis-en)
+[Rename This (Win 10/11)](https://www.bugzinho.com/renamethis)
 
 ## Introduction
 
