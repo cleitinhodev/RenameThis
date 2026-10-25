@@ -89,7 +89,7 @@ def get_date(entry: FileEntry, source: str, ctx: RuleContext | None) -> datetime
         dt = metadata.exif_datetime(entry)
         if dt is not None:
             return dt
-        if ctx is not None:
+        if ctx is not None and entry.ext.lower() in metadata.IMAGE_EXTS:
             if not metadata.has_pillow():
                 ctx.warn("pillow_missing")
             else:

@@ -146,14 +146,24 @@ def test_date_rule_validate():
 
 
 def test_date_exif_falls_back_with_warning(tmp_path):
-    p = tmp_path / "semexif.txt"
+    p = tmp_path / "semexif.jpg"  # não é uma imagem de verdade
     p.write_text("x")
     os.utime(p, (MTIME, MTIME))
     e = FileEntry.from_path(p)
     ctx = RuleContext(e, 0, 0, 1)
     out = apply_rules([DateRule(source="exif", position="replace")], e, ctx)
-    assert out == "2023-07-14.txt"
+    assert out == "2023-07-14.jpg"
     assert ctx.warnings and ctx.warnings[0][0] in ("exif_missing", "pillow_missing")
+
+
+def test_date_exif_non_image_uses_modified_silently(tmp_path):
+    p = tmp_path / "doc.txt"
+    p.write_text("x")
+    os.utime(p, (MTIME, MTIME))
+    e = FileEntry.from_path(p)
+    ctx = RuleContext(e, 0, 0, 1)
+    assert apply_rules([DateRule(source="exif", position="replace")], e, ctx) == "2023-07-14.txt"
+    assert not ctx.warnings
 
 
 def test_date_exif_real_photo(tmp_path):
