@@ -290,6 +290,7 @@ class MainWindow(QMainWindow):
 
         m_edit = bar.addMenu(tr("menu.edit"))
         self.act_undo = m_edit.addAction(tr("menu.undo"), self.undo)
+        self.act_undo.setShortcut(QKeySequence.StandardKey.Undo)  # sempre pede confirmação
         self.act_recover = m_edit.addAction(tr("menu.recover"), self.recover)
 
         m_lang = bar.addMenu(tr("menu.language"))
