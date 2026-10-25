@@ -1,10 +1,21 @@
 name: Release (Windows .exe)
 
-# Gera os executáveis do Windows quando uma tag "v*" é enviada
-# (ex.: git tag v2.0.0 && git push origin v2.0.0) e anexa ao Release.
+# Gera os executáveis do Windows.
+# - Tag "v*" (ex.: git tag v2.0.0 && git push origin v2.0.0): anexa os .exe ao Release.
+# - Push na branch de testes v2-pyside6 (ou execução manual): os .exe ficam só como
+#   artefatos da execução (aba Actions), sem Release público.
+#   Obs.: a execução manual (workflow_dispatch) só aparece quando este arquivo
+#   também existir na branch padrão.
 on:
   push:
     tags: ["v*"]
+    branches: [v2-pyside6]
+    paths:
+      - "renamethis/**"
+      - "packaging/**"
+      - "Design/**"
+      - "pyproject.toml"
+      - ".github/workflows/release.yml"
   workflow_dispatch:
 
 permissions:
