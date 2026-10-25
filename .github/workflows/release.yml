@@ -1,0 +1,55 @@
+name: Release (Windows .exe)
+
+# Gera os executáveis do Windows quando uma tag "v*" é enviada
+# (ex.: git tag v2.0.0 && git push origin v2.0.0) e anexa ao Release.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install ".[dev,build]"
+      - name: Testes antes de empacotar
+        run: pytest -q
+      - name: PyInstaller (interface)
+        run: >
+          pyinstaller --noconfirm --clean --onefile --windowed
+          --name RenameThis
+          --icon Design/icone.ico
+          --add-data "Design;Design"
+          --paths .
+          --collect-data renamethis
+          packaging/gui_launcher.py
+      - name: PyInstaller (linha de comando)
+        run: >
+          pyinstaller --noconfirm --onefile --console
+          --name renamethis-cli
+          --icon Design/icone.ico
+          --paths .
+          --collect-data renamethis
+          packaging/cli_launcher.py
+      - name: Teste rápido do executável de linha de comando
+        run: dist/renamethis-cli.exe --version
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RenameThis-windows
+          path: dist/*.exe
+      - name: Publica no Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.exe
+          generate_release_notes: true
