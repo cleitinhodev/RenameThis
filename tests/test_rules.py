@@ -207,7 +207,8 @@ def test_cleanup():
     rule = CleanupRule(separators_to_spaces=True)
     assert run(rule, name="meu_arquivo--final..v2.txt") == "meu arquivo final v2.txt"
     rule = CleanupRule(remove_invalid=True)
-    assert run(rule, name="a:b?c.txt") == "abc.txt"
+    # (sem "letra:" no início: no Windows o pathlib leria "a:" como unidade de disco)
+    assert run(rule, name="xa:b?c.txt") == "xabc.txt"
     assert strip_accents("ÁÉÍÓÚ ãõ ç ñ") == "AEIOU ao c n"
 
 
