@@ -1,0 +1,549 @@
+/* RenameThis! — folha de estilo.
+   As marcações com chaves duplas (ex.: accent) são trocadas pelas cores de renamethis/gui/theme.py
+   (variante clara ou escura) e "assets" pela pasta dos ícones gerados. */
+
+/* ------------------------------------------------------------ base */
+QMainWindow, QDialog, QMessageBox {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                stop:0 {{window}}, stop:1 {{window2}});
+}
+QWidget {
+    color: {{text}};
+}
+QWidget:disabled {
+    color: {{disabled_text}};
+}
+QLabel {
+    background: transparent;
+}
+
+/* ------------------------------------------------------------ cabeçalho */
+QMenuBar {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{header1}}, stop:0.55 {{header2}}, stop:1 {{header3}});
+    color: {{header_text}};
+    padding: 3px 6px;
+    border: none;
+}
+QMenuBar::item {
+    background: transparent;
+    color: {{header_text}};
+    padding: 5px 12px;
+    border-radius: 7px;
+}
+QMenuBar::item:selected, QMenuBar::item:pressed {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+#HeaderBar {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{header1}}, stop:0.55 {{header2}}, stop:1 {{header3}});
+    border-radius: 14px;
+}
+#HeaderBar QLabel {
+    color: {{header_text}};
+    font-weight: 600;
+    font-size: 10.5pt;
+}
+#HeaderBar QLineEdit {
+    background: {{header_input}};
+    border: 1px solid {{header_input_border}};
+    border-radius: 10px;
+    padding: 7px 10px;
+    color: {{text}};
+}
+#HeaderBar QLineEdit:focus {
+    border: 1px solid {{accent3}};
+}
+#HeaderBar QPushButton, #HeaderBar QToolButton {
+    background: rgba(255, 255, 255, 0.16);
+    color: {{header_text}};
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-weight: 600;
+}
+#HeaderBar QToolButton {
+    padding: 6px;
+}
+#HeaderBar QPushButton:hover, #HeaderBar QToolButton:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+#HeaderBar QPushButton:pressed, #HeaderBar QToolButton:pressed {
+    background: rgba(0, 0, 0, 0.18);
+}
+
+/* ------------------------------------------------------------ painéis (cards) */
+QGroupBox {
+    background: {{card}};
+    border: 1px solid {{card_border}};
+    border-radius: 14px;
+    margin-top: 14px;
+    padding: 12px 7px 7px 7px;
+    font-weight: 600;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 14px;
+    top: 2px;
+    padding: 2px 10px;
+    color: {{text_on_accent}};
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent}}, stop:1 {{accent2}});
+    border-radius: 8px;
+}
+QGroupBox QLabel, QGroupBox QCheckBox {
+    font-weight: normal;
+}
+#EditorTitle {
+    color: {{accent}};
+    font-size: 11pt;
+    font-weight: 700;
+    padding-bottom: 2px;
+}
+QScrollArea, QScrollArea > QWidget > QWidget {
+    background: transparent;
+}
+QSplitter::handle {
+    background: transparent;
+    width: 8px;
+}
+QSplitter::handle:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0.35 transparent, stop:0.45 {{accent}}, stop:0.55 {{accent}},
+                stop:0.65 transparent);
+}
+
+/* ------------------------------------------------------------ botões */
+QPushButton {
+    background: {{surface}};
+    border: 1px solid {{border}};
+    border-radius: 10px;
+    padding: 7px 16px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    border-color: {{accent}};
+    background: {{accent_soft}};
+}
+QPushButton:pressed {
+    background: {{selection}};
+}
+QPushButton:focus {
+    border-color: {{border_focus}};
+}
+QPushButton:disabled {
+    background: {{disabled_bg}};
+    border-color: {{disabled_bg}};
+    color: {{disabled_text}};
+}
+QPushButton:default {
+    border-color: {{accent}};
+}
+
+#PrimaryButton {
+    color: {{text_on_accent}};
+    border: none;
+    border-radius: 12px;
+    padding: 8px 26px;
+    font-size: 10.5pt;
+    font-weight: 700;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent}}, stop:0.5 {{accent2}}, stop:1 {{accent3}});
+}
+#PrimaryButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent_hover}}, stop:0.5 {{accent2}}, stop:1 {{accent_hover2}});
+}
+#PrimaryButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent_pressed}}, stop:1 {{accent2}});
+    padding-top: 9px;
+    padding-bottom: 7px;
+}
+#PrimaryButton:disabled {
+    background: {{disabled_bg}};
+    color: {{disabled_text}};
+}
+
+#DangerButton {
+    color: {{danger}};
+    background: {{danger_soft}};
+    border: 1px solid {{danger}};
+    border-radius: 12px;
+    padding: 8px 16px;
+}
+#DangerButton:hover {
+    color: {{text_on_accent}};
+    border-color: transparent;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{danger}}, stop:1 {{danger2}});
+}
+#DangerButton:pressed {
+    background: {{danger}};
+    color: {{text_on_accent}};
+}
+#DangerButton:disabled {
+    background: {{disabled_bg}};
+    border-color: {{disabled_bg}};
+    color: {{disabled_text}};
+}
+
+QToolButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 5px;
+}
+QToolButton:hover {
+    background: {{accent_soft}};
+    border-color: {{border}};
+}
+QToolButton:pressed {
+    background: {{selection}};
+}
+#IconButton {
+    background: {{surface_alt}};
+    border: 1px solid {{border}};
+}
+#IconButton:hover {
+    background: {{accent_soft}};
+    border-color: {{accent}};
+}
+#DangerIconButton {
+    background: {{surface_alt}};
+    border: 1px solid {{border}};
+}
+#DangerIconButton:hover {
+    background: {{danger_soft}};
+    border-color: {{danger}};
+}
+#AccentToolButton {
+    color: {{text_on_accent}};
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    padding: 6px 14px;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent}}, stop:1 {{accent2}});
+}
+#AccentToolButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent_hover}}, stop:1 {{accent3}});
+}
+#AccentToolButton:pressed {
+    background: {{accent_pressed}};
+}
+#AccentToolButton::menu-indicator {
+    image: none;
+    width: 0px;
+}
+
+/* ------------------------------------------------------------ campos */
+QLineEdit, QSpinBox, QComboBox {
+    background: {{surface}};
+    border: 1px solid {{border}};
+    border-radius: 9px;
+    padding: 4px 7px;
+    selection-background-color: {{accent}};
+    selection-color: {{text_on_accent}};
+}
+QLineEdit:hover, QSpinBox:hover, QComboBox:hover {
+    border-color: {{accent2}};
+}
+QLineEdit:focus, QSpinBox:focus, QComboBox:focus, QComboBox:on {
+    border: 1px solid {{border_focus}};
+    background: {{surface}};
+}
+QLineEdit:disabled, QSpinBox:disabled, QComboBox:disabled {
+    background: {{disabled_bg}};
+    color: {{disabled_text}};
+}
+QComboBox {
+    padding-right: 22px;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 22px;
+    border: none;
+}
+QComboBox::down-arrow {
+    image: url({{assets}}/chevron-down.png);
+    width: 14px;
+    height: 14px;
+}
+QComboBox::down-arrow:hover, QComboBox::down-arrow:on {
+    image: url({{assets}}/chevron-down-accent.png);
+}
+QComboBox::down-arrow:disabled {
+    image: url({{assets}}/chevron-down-disabled.png);
+}
+QComboBox QAbstractItemView {
+    background: {{surface}};
+    border: 1px solid {{border}};
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: {{accent_soft}};
+    selection-color: {{text}};
+}
+QSpinBox {
+    padding-right: 24px;
+}
+QSpinBox::up-button, QSpinBox::down-button {
+    subcontrol-origin: border;
+    width: 22px;
+    border: none;
+    background: transparent;
+}
+QSpinBox::up-button {
+    subcontrol-position: top right;
+    border-top-right-radius: 9px;
+}
+QSpinBox::down-button {
+    subcontrol-position: bottom right;
+    border-bottom-right-radius: 9px;
+}
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background: {{accent_soft}};
+}
+QSpinBox::up-arrow {
+    image: url({{assets}}/chevron-up.png);
+    width: 11px;
+    height: 11px;
+}
+QSpinBox::down-arrow {
+    image: url({{assets}}/chevron-down.png);
+    width: 11px;
+    height: 11px;
+}
+QSpinBox::up-arrow:hover {
+    image: url({{assets}}/chevron-up-accent.png);
+}
+QSpinBox::down-arrow:hover {
+    image: url({{assets}}/chevron-down-accent.png);
+}
+
+/* ------------------------------------------------------------ caixas de seleção */
+QCheckBox {
+    spacing: 6px;
+    background: transparent;
+}
+QCheckBox::indicator, QListView::indicator, QTableView::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+    border: 1.5px solid {{border}};
+    background: {{surface}};
+}
+QCheckBox::indicator:hover, QListView::indicator:hover {
+    border-color: {{accent}};
+    background: {{accent_soft}};
+}
+QCheckBox::indicator:checked, QListView::indicator:checked, QTableView::indicator:checked {
+    border: 1.5px solid {{accent}};
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                stop:0 {{accent}}, stop:1 {{accent3}});
+    image: url({{assets}}/check.png);
+}
+QCheckBox::indicator:indeterminate {
+    border: 1.5px solid {{accent}};
+    background: {{accent}};
+    image: url({{assets}}/dash.png);
+}
+QCheckBox::indicator:disabled {
+    background: {{disabled_bg}};
+    border-color: {{disabled_bg}};
+}
+
+/* ------------------------------------------------------------ listas e tabelas */
+QListWidget {
+    background: {{surface}};
+    border: 1px solid {{border}};
+    border-radius: 10px;
+    padding: 4px;
+    outline: none;
+}
+QListWidget::item {
+    padding: 4px 4px;
+    margin: 1px 0px;
+    border-radius: 8px;
+}
+QListWidget::item:hover {
+    background: {{surface_alt}};
+}
+QListWidget::item:selected {
+    color: {{selection_text}};
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{selection}}, stop:1 {{accent_soft}});
+    border: 1px solid {{accent}};
+}
+
+QTableView, QTableWidget {
+    background: {{surface}};
+    alternate-background-color: {{surface_alt}};
+    border: 1px solid {{border}};
+    border-radius: 10px;
+    gridline-color: transparent;
+    selection-background-color: {{selection}};
+    selection-color: {{selection_text}};
+    outline: none;
+}
+QTableView::item {
+    padding: 0px 6px;
+    border: none;
+}
+QTableView::item:selected {
+    background: {{selection}};
+    color: {{selection_text}};
+}
+QHeaderView {
+    background: transparent;
+    border: none;
+}
+QHeaderView::section {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                stop:0 {{accent_soft}}, stop:1 {{surface_alt}});
+    color: {{accent}};
+    font-weight: 700;
+    border: none;
+    border-bottom: 2px solid {{accent}};
+    border-right: 1px solid {{card_border}};
+    padding: 7px 8px;
+}
+QHeaderView::section:first {
+    border-top-left-radius: 9px;
+}
+QHeaderView::section:last {
+    border-top-right-radius: 9px;
+    border-right: none;
+}
+QTableCornerButton::section {
+    background: {{accent_soft}};
+    border: none;
+}
+
+/* ------------------------------------------------------------ barras de rolagem */
+QScrollBar:vertical {
+    background: transparent;
+    width: 11px;
+    margin: 3px 2px 3px 0px;
+}
+QScrollBar:horizontal {
+    background: transparent;
+    height: 11px;
+    margin: 0px 3px 2px 3px;
+}
+QScrollBar::handle:vertical {
+    background: {{scrollbar}};
+    min-height: 30px;
+    border-radius: 4px;
+}
+QScrollBar::handle:horizontal {
+    background: {{scrollbar}};
+    min-width: 30px;
+    border-radius: 4px;
+}
+QScrollBar::handle:hover {
+    background: {{scrollbar_hover}};
+}
+QScrollBar::add-line, QScrollBar::sub-line {
+    width: 0px;
+    height: 0px;
+}
+QScrollBar::add-page, QScrollBar::sub-page {
+    background: transparent;
+}
+
+/* ------------------------------------------------------------ progresso */
+QProgressBar {
+    background: {{surface_alt}};
+    border: 1px solid {{border}};
+    border-radius: 9px;
+    min-height: 16px;
+    text-align: center;
+    font-weight: 600;
+}
+QProgressBar::chunk {
+    border-radius: 8px;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent}}, stop:0.5 {{accent2}}, stop:1 {{accent3}});
+}
+
+/* ------------------------------------------------------------ menus e dicas */
+QMenu {
+    background: {{card}};
+    border: 1px solid {{card_border}};
+    border-radius: 10px;
+    padding: 6px;
+}
+QMenu::item {
+    padding: 7px 26px 7px 14px;
+    border-radius: 7px;
+    background: transparent;
+}
+QMenu::item:selected {
+    color: {{text_on_accent}};
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent}}, stop:1 {{accent2}});
+}
+QMenu::item:disabled {
+    color: {{disabled_text}};
+}
+QMenu::separator {
+    height: 1px;
+    background: {{card_border}};
+    margin: 5px 8px;
+}
+QMenu::indicator {
+    width: 14px;
+    height: 14px;
+    margin-left: 6px;
+}
+QToolTip {
+    background: {{tooltip_bg}};
+    color: {{tooltip_text}};
+    border: 1px solid {{accent}};
+    border-radius: 8px;
+    padding: 6px 8px;
+}
+
+/* ------------------------------------------------------------ diálogos */
+QMessageBox QLabel {
+    font-size: 10pt;
+}
+QMessageBox QPushButton, QDialogButtonBox QPushButton {
+    min-width: 92px;
+}
+QDialogButtonBox QPushButton:default, QMessageBox QPushButton:default {
+    color: {{text_on_accent}};
+    border: none;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent}}, stop:1 {{accent2}});
+}
+QDialogButtonBox QPushButton:default:hover, QMessageBox QPushButton:default:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 {{accent_hover}}, stop:1 {{accent3}});
+}
+
+#SummaryLabel {
+    color: {{text_muted}};
+    font-weight: 600;
+    padding-left: 4px;
+}
+#SummaryLabel[state="error"] {
+    color: {{error}};
+}
+#SummaryLabel[state="ready"] {
+    color: {{ok}};
+}
+#HelpLabel {
+    color: {{text_muted}};
+    background: {{surface_alt}};
+    border: 1px dashed {{border}};
+    border-radius: 8px;
+    padding: 6px 8px;
+}

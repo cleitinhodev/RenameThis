@@ -52,7 +52,8 @@ class RuleEditor(QWidget):
         form = QFormLayout(self)
         form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         self._form = form
-        title = QLabel(f"<b>{tr('rule.' + rule.type)}</b>")
+        title = QLabel(tr("rule." + rule.type))
+        title.setObjectName("EditorTitle")
         form.addRow(title)
 
         for spec in rule.FIELDS:
@@ -102,7 +103,7 @@ class RuleEditor(QWidget):
         font = help_label.font()
         font.setPointSizeF(max(font.pointSizeF() - 1, 7))
         help_label.setFont(font)
-        help_label.setStyleSheet("color: palette(placeholder-text);")
+        help_label.setObjectName("HelpLabel")
         self._form.addRow(help_label)
 
     def _set(self, name: str, value) -> None:

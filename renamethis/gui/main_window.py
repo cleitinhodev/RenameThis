@@ -31,7 +31,6 @@ from PySide6.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSplitter,
-    QStyle,
     QTableView,
     QToolButton,
     QVBoxLayout,
@@ -64,8 +63,9 @@ from ..core.journal import default_data_dir
 from ..core.rules import RULE_TYPES, Rule
 from ..core.scanner import parse_ext_list
 from ..i18n import LANGUAGES, error_text, get_language, set_language, tr
+from . import theme
 from .dialogs import HistoryDialog
-from .preview_model import COLUMNS, PreviewModel
+from .preview_model import COLUMNS, PreviewDelegate, PreviewModel
 from .resources import resource_path
 from .rule_editor import RuleEditor
 from .workers import start_worker
@@ -220,16 +220,19 @@ class MainWindow(QMainWindow):
         self.folder_edit.textChanged.connect(self._on_folder_text)
         top.addWidget(self.folder_edit, 1)
         browse = QPushButton(tr("folder.browse"))
+        browse.setIcon(theme.icon("folder", theme.current().header_text))
         browse.clicked.connect(self.browse_folder)
         top.addWidget(browse)
         refresh = QToolButton()
-        refresh.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload))
+        refresh.setIcon(theme.icon("refresh", theme.current().header_text))
         refresh.setToolTip(tr("folder.refresh"))
         refresh.clicked.connect(self.rescan)
         top.addWidget(refresh)
         self.top_bar = QWidget()
+        self.top_bar.setObjectName("HeaderBar")
+        self.top_bar.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.top_bar.setLayout(top)
-        top.setContentsMargins(0, 0, 0, 0)
+        top.setContentsMargins(14, 10, 10, 10)
         root.addWidget(self.top_bar)
 
         splitter = QSplitter(Qt.Orientation.Horizontal)
@@ -244,6 +247,7 @@ class MainWindow(QMainWindow):
         # --- barra inferior
         bottom = QHBoxLayout()
         self.summary_label = QLabel()
+        self.summary_label.setObjectName("SummaryLabel")
         self.summary_label.setWordWrap(True)
         bottom.addWidget(self.summary_label, 1)
         self.progress = QProgressBar()
@@ -251,12 +255,15 @@ class MainWindow(QMainWindow):
         self.progress.setVisible(False)
         bottom.addWidget(self.progress)
         self.undo_button = QPushButton(tr("button.undo"))
-        self.undo_button.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_ArrowBack))
+        self.undo_button.setObjectName("DangerButton")
+        self.undo_button.setIcon(theme.icon("undo", theme.current().danger))
         self.undo_button.clicked.connect(self.undo)
         bottom.addWidget(self.undo_button)
         self.apply_button = QPushButton(tr("button.apply"))
         self.apply_button.setToolTip(tr("button.apply_tip"))
-        self.apply_button.setMinimumHeight(34)
+        self.apply_button.setObjectName("PrimaryButton")
+        self.apply_button.setIcon(theme.icon("sparkles", theme.current().text_on_accent))
+        self.apply_button.setMinimumHeight(38)
         self.apply_button.setMinimumWidth(140)
         font = self.apply_button.font()
         font.setBold(True)
@@ -272,6 +279,11 @@ class MainWindow(QMainWindow):
         self.model.retranslate()
         self._update_summary()
         self._update_buttons()
+
+    def rebuild_for_theme(self) -> None:
+        """Chamado quando o sistema troca entre claro e escuro (os ícones mudam de cor)."""
+        self._build_ui()
+        self.table.viewport().update()
 
     def _build_menus(self) -> None:
         bar = self.menuBar()
@@ -329,6 +341,7 @@ class MainWindow(QMainWindow):
         buttons = QHBoxLayout()
         add = QToolButton()
         add.setText("＋ " + tr("rules.add"))
+        add.setObjectName("AccentToolButton")
         add.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
         add.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         menu = QMenu(add)
@@ -338,16 +351,18 @@ class MainWindow(QMainWindow):
         self.add_rule_button = add
         buttons.addWidget(add)
         buttons.addStretch(1)
-        sp = QStyle.StandardPixmap
+        pal = theme.current()
         for icon, tip, slot in (
-            (sp.SP_ArrowUp, "rules.up", lambda: self.move_rule(-1)),
-            (sp.SP_ArrowDown, "rules.down", lambda: self.move_rule(1)),
-            (sp.SP_FileDialogNewFolder, "rules.duplicate", self.duplicate_rule),
-            (sp.SP_TrashIcon, "rules.remove", self.remove_rule),
-            (sp.SP_DialogResetButton, "rules.clear", self.clear_rules),
+            ("arrow-up", "rules.up", lambda: self.move_rule(-1)),
+            ("arrow-down", "rules.down", lambda: self.move_rule(1)),
+            ("copy", "rules.duplicate", self.duplicate_rule),
+            ("trash", "rules.remove", self.remove_rule),
+            ("clear", "rules.clear", self.clear_rules),
         ):
             b = QToolButton()
-            b.setIcon(self.style().standardIcon(icon))
+            danger = icon in ("trash", "clear")
+            b.setObjectName("DangerIconButton" if danger else "IconButton")
+            b.setIcon(theme.icon(icon, pal.danger if danger else pal.accent))
             b.setToolTip(tr(tip))
             b.clicked.connect(slot)
             buttons.addWidget(b)
@@ -430,7 +445,10 @@ class MainWindow(QMainWindow):
         v.addLayout(row)
         self.table = QTableView()
         self.table.setModel(self.model)
-        self.table.setAlternatingRowColors(False)
+        self.table.setAlternatingRowColors(True)
+        self.table.setShowGrid(False)
+        self.table.setItemDelegate(PreviewDelegate(self.model, self.table))
+        self.table.verticalHeader().setDefaultSectionSize(32)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.verticalHeader().setVisible(False)
@@ -439,9 +457,9 @@ class MainWindow(QMainWindow):
         header.setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
         header.setSectionResizeMode(COLUMNS.index("index"), QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(COLUMNS.index("status"), QHeaderView.ResizeMode.Stretch)
-        header.resizeSection(COLUMNS.index("original"), 240)
-        header.resizeSection(COLUMNS.index("new"), 260)
-        header.resizeSection(COLUMNS.index("folder"), 90)
+        header.resizeSection(COLUMNS.index("original"), 220)
+        header.resizeSection(COLUMNS.index("new"), 235)
+        header.resizeSection(COLUMNS.index("folder"), 70)
         v.addWidget(self.table)
         return panel
 
@@ -655,11 +673,11 @@ class MainWindow(QMainWindow):
     def _update_summary(self) -> None:
         if not hasattr(self, "summary_label"):
             return
-        style = ""
+        state = ""
         if self._running:
             text = tr("summary.running")
         elif getattr(self, "_scan_error", None):
-            text, style = self._scan_error, "color: #d9534f;"
+            text, state = self._scan_error, "error"
         elif not self.folder:
             text = tr("summary.no_folder")
         elif self.plan is None or not self.plan.items:
@@ -677,9 +695,14 @@ class MainWindow(QMainWindow):
             )
             if self.plan.has_errors:
                 text += "  —  " + tr("summary.has_errors")
-                style = "color: #d9534f; font-weight: bold;"
+                state = "error"
+            elif s["ok"] + s["warning"]:
+                state = "ready"
         self.summary_label.setText(text)
-        self.summary_label.setStyleSheet(style)
+        if self.summary_label.property("state") != state:
+            self.summary_label.setProperty("state", state)
+            self.summary_label.style().unpolish(self.summary_label)
+            self.summary_label.style().polish(self.summary_label)
 
     def _update_buttons(self) -> None:
         if not hasattr(self, "apply_button"):

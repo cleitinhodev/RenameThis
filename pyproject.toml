@@ -42,6 +42,7 @@ include = ["renamethis*"]
 
 [tool.setuptools.package-data]
 "renamethis.i18n" = ["*.json"]
+"renamethis.gui" = ["styles/*.qss"]
 
 [tool.ruff]
 line-length = 100
