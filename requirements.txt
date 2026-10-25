@@ -1,0 +1,5 @@
+PySide6>=6.6
+platformdirs>=3.0
+# Opcionais (metadados de fotos e músicas)
+Pillow>=10.0
+mutagen>=1.47
